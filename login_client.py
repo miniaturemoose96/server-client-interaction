@@ -1,15 +1,13 @@
 import socket
-#make PEP-8 Compliant
+#make PEP-8 Compliant create a separate function for login 
 
-#login to existing user information
 def main():
 	sendLoginInformation()
 	
 def sendLoginInformation():
+	"""login to existing user information"""
 	s = socket.socket()
-	host = socket.gethostname()
-	port = 12345
-	s.connect((host, port))
+	s.connect(('127.0.0.1', 12345))
 	
 	#Login here
 	#TODO: add a loop to ask the user to have correct credentials 

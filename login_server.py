@@ -5,7 +5,7 @@ import socket
 #TODO: make PEP-8 Compliant
 
 #Create a list of valid users and passwords
-Logins = [("Alejandro", "pythonrules"),
+LOGINS = [("Alejandro", "pythonrules"),
 		  ("Betty", "ilovethebackstreetboys"),
 		  ("Maria", "postmalone"),
 		  ("William", "pinkfloyd")
@@ -13,16 +13,14 @@ Logins = [("Alejandro", "pythonrules"),
 		  
 def initServer():
 	s = socket.socket()
-	host = socket.gethostname()
-	port = 12345
-	s.bind((host, port))
+	s.bind(("127.0.0.1", 12345))
 	s.listen(5)
 	print('Server Listening...')
 	print("Waiting for Connection")
 	
 	#establish a connection
 	conn, addr = s.accept()
-	print("Got connection from: ", addr)
+	print(f"Got connection from: {addr}")
 	
 	#collect username and password from client and decode them to pass it to validateLogin()
 	username = conn.recv(1024).decode()
@@ -39,7 +37,7 @@ def initServer():
 	conn.close()
 	
 def validateLogin(username, password):
-	if(username, password) in Logins:
+	if(username, password) in LOGINS:
 		return "Success, Welcome! " + username
 	else:
 		return "Fail, please try again."
