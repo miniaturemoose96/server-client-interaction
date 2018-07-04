@@ -11,43 +11,38 @@ LOGINS = [("Alejandro", "pythonrules"),
 		  ("William", "pinkfloyd")
 		  ]
 		  
-def initServer():
+def initiate_Server():
+	#Listen for connections
 	s = socket.socket()
 	s.bind(("127.0.0.1", 12345))
 	s.listen(5)
 	print('Server Listening...')
 	print("Waiting for Connection")
 	
-	#establish a connection
+	#establish a connection with the client.py
 	conn, addr = s.accept()
 	print(f"Got connection from: {addr}")
-	
-	#collect username and password from client and decode them to pass it to validateLogin()
+	msg = "A Connection has been established"
+	conn.sendall(msg.encode())
+	validate_Login(conn)
+
+def validate_Login(conn):
+	#receive the input given by user to check if it is valid login
 	username = conn.recv(1024).decode()
 	password = conn.recv(1024).decode()
-	login = validateLogin(username, password)
-	conn.sendall(login.encode())
 	
+	if (username, password) in LOGINS:
+		print("Success")
+		rsp = f"Welcome! {username}"
+	else:
+		print("Failed")
+		rsp = "Fail Try again"
 	
-	#collect yes or no to logout from client then pass it to logout()
-	response = conn.recv(1024).decode()
-	Logout = logout(response)
-	conn.sendall(Logout.encode())
-	
+	conn.sendall(rsp.encode())	
 	conn.close()
-	
-def validateLogin(username, password):
-	if(username, password) in LOGINS:
-		return "Success, Welcome! " + username
-	else:
-		return "Fail, please try again."
 
-def logout(response):
-	if response == ("yes") or response == ("Yes") or response == ("YES"):
-		return "Logout successful, See you next time!"
-	elif response == ("no") or response == ("No") or response == ("NO"):
-		return "Logout unsuccessful, Thanks for sticking around!"
-	else:
-		return "Command not valid, try Yes or No"
-	
-initServer()	
+def main():
+	initiate_Server()
+
+if __name__ == "__main__":
+	main()	

@@ -1,30 +1,30 @@
 import socket
 #make PEP-8 Compliant create a separate function for login 
 
-def main():
-	sendLoginInformation()
-	
-def sendLoginInformation():
-	"""login to existing user information"""
+def establish_Connection():
+	#Login here
+	#TODO: add a loop to ask the user to have correct credentials
+	#connect to the initiated server
 	s = socket.socket()
 	s.connect(('127.0.0.1', 12345))
+	msg = s.recv(1024).decode()
+	print(msg)
+	login(s)
 	
-	#Login here
-	#TODO: add a loop to ask the user to have correct credentials 
-	print("Welcome please Log in.")
+	s.close()
+
+def login(s):
+	#login to the existing accounts in LOGINS check login_server.py
+	print("Welcome, please Sign In.")
 	username = input("Username: ")
 	password = input("Password: ")
 	s.sendall(username.encode())
 	s.sendall(password.encode())
-	print(s.recv(1024).decode())
-	
-	#Logout here
-	#TODO: loop to return back to login once logged out 
-	print("Would you like to logout?")
-	response = input("Yes or No >> ")
-	s.sendall(response.encode())
-	print(s.recv(1024).decode())
-	
-	s.close()
-	
-main()
+	server_rsp = s.recv(1024).decode()
+	print(server_rsp)
+
+def main():
+	establish_Connection()
+
+if __name__ == "__main__":
+	main()		
