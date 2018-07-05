@@ -19,12 +19,19 @@ def initiate_Server():
 	print('Server Listening...')
 	print("Waiting for Connection")
 	
-	#establish a connection with the client.py
-	conn, addr = s.accept()
-	print(f"Got connection from: {addr}")
-	msg = "A Connection has been established"
-	conn.sendall(msg.encode())
-	validate_Login(conn)
+	#keep server alive as long as user is trying to login
+	user_logged_in = False
+	
+	if user_logged_in:
+		conn.close()
+	elif not user_logged_in:
+		#establish a connection with the client.py
+		conn, addr = s.accept()
+		print(f"Got connection from: {addr}")
+		msg = "A Connection has been established"
+		conn.sendall(msg.encode())
+		validate_Login(conn)
+		conn.close()
 
 def validate_Login(conn):
 	#receive the input given by user to check if it is valid login
