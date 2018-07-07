@@ -5,29 +5,33 @@ def establish_Connection():
 	#Login here
 	#TODO: add a loop to ask the user to have correct credentials
 	#connect to the initiated server
-	while True:
-		s = socket.socket()
-		s.connect(('127.0.0.1', 12345))
-		msg = s.recv(1024).decode()
-		print(msg)
-		login(s)
+	s = socket.socket()
+	s.connect(('127.0.0.1', 12345))
+	msg = s.recv(1024).decode()
+	print(msg)
+	login(s)
 	
 def login(s):
-	#the user is not logged in yet 
+	#This is the users first time, ask for credentials
 	logged_in = False
-	
-	if logged_in:
-		#assuming client is still not logged in 
-		s.close()
-	elif not logged_in:
-		#login to the existing accounts on server.py
+	while not logged_in:
+		#login to the existing accounts on server
 		print("Welcome, please Login")
 		username = input("Username: ")
 		password = input("Password: ")
 		s.sendall(username.encode())
-		s.sendall(password.encode())	
+		s.sendall(password.encode())
 		server_rsp = s.recv(1024).decode()
-		print(server_rsp)
+		if "Welcome" in server_rsp:
+			logged_in = True
+			print(server_rsp)
+			break
+		else:
+			logged_in = False
+			print(server_rsp)
+			continue
+	else:
+		print(f"You are logged in as {username}")
 		s.close()
 
 def main():
