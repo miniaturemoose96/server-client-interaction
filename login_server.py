@@ -1,7 +1,6 @@
 import socket
 """
-    TODO: loop to return back to login once logged out
-    TODO: add registration
+	TODO: Add a menu 
 """
 # create a list of valid users and passwords
 LOGINS = [
@@ -12,7 +11,7 @@ LOGINS = [
 ]
 
 
-def initiate_Server():
+def initiate_server():
     # Listen for connections
     s = socket.socket()
     s.bind(("127.0.0.1", 12345))
@@ -27,11 +26,12 @@ def initiate_Server():
     # check if the client is logged in or not
     logged_in = False
     while not logged_in:
-        logged_in = validate_Login(conn)
+        logged_in = validate_login(conn)
     conn.close()
 
 
-def validate_Login(conn):
+def validate_login(conn):
+	# TODO: fix server response, set the Welcome on the client side
     # receive the input given by user to check if it is valid login
     username = conn.recv(1024).decode()
     password = conn.recv(1024).decode()
@@ -46,7 +46,7 @@ def validate_Login(conn):
 
 
 def main():
-    initiate_Server()
+    initiate_server()
 
 
 if __name__ == "__main__":
