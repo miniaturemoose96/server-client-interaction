@@ -31,18 +31,17 @@ def initiate_server():
 
 
 def validate_login(conn):
-	# TODO: fix server response, set the Welcome on the client side
-    # receive the input given by user to check if it is valid login
-    username = conn.recv(1024).decode()
-    password = conn.recv(1024).decode()
-    if (username, password) in LOGINS:
-        rsp = f"Welcome! {username}"
-        conn.sendall(rsp.encode())
-        return True
-    else:
-        rsp = "Not a valid username or password"
-        conn.sendall(rsp.encode())
-    return False
+	# receive the input given by user to check if it is valid login
+	username = conn.recv(1024).decode()
+	password = conn.recv(1024).decode()
+	if (username, password) in LOGINS:
+		rsp = "Success"
+		conn.sendall(rsp.encode())
+		return True
+	else:
+		rsp = "Fail"
+		conn.sendall(rsp.encode())
+	return False		
 
 
 def main():

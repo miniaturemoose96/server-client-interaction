@@ -24,13 +24,12 @@ def login(s):
 		s.sendall(username.encode())
 		s.sendall(password.encode())
 		server_rsp = s.recv(1024).decode()
-		if "Welcome" in server_rsp:
+		if "Success" in server_rsp:
 			logged_in = True
-			print(server_rsp)
-			break
+			print(f"Welcome, {username}")
 		else:
 			logged_in = False
-			print(server_rsp)
+			print("Incorrect Username/Password, Please Try again.")
 			continue
 	else:
 		print(f"You are logged in as {username}")
