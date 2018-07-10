@@ -33,12 +33,25 @@ def login(s):
 			continue
 	else:
 		print(f"You are logged in as {username}")
+		return s, logged_in, username
 		s.close()
 
 
+def menu(s, logged_in, username):
+	# once the user logs in this should give them options: Logout
+	#TODO: add extra options including Register
+	while logged_in:
+		print(f"What would you like to do {username}?")
+		break
+	else:
+		print("Please login")
+		
+		
 def main():
+	#TODO: fix logged_in make it its own function 
 	s = establish_connection()
 	login(s)
+	menu(s, logged_in, username)
 
 
 if __name__ == "__main__":
