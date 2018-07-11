@@ -1,7 +1,7 @@
 import socket
 import sys
 """
-    TODO: Create a menu function that asks the user to do something
+    TODO: Allow the user to logout and return to the option menu
 """
 
 
@@ -34,21 +34,24 @@ def login(s):
 			continue
 	else:
 		print(f"You are logged in as {username}")
-		return s, logged_in, username
+	return username, logged_in 	
 	s.close()
 
 
-def menu(s, logged_in, username):
-	# once the user logs in this should give them options: Logout
-	#TODO: implement this menu function when the user logs in 
-	while not logged_in:
-		print(f"What would you like to do {username}?")
+def logout(s, username):
+	# Allow the user to logout of the application
+	print(f"Would you like to Logout {username}?")
+	client_rsp = input("Yes or No \n>>").lower()
+	s.sendall(client_rsp.encode())
+	logout_rsp = s.recv(1024).decode()
+	if "Success" in logout_rsp:
+		print("You logged out successfully.")
 	else:
-		print("Please login")
-		
-		
+		print("You chose to stay logged in.")
+	
+	
 def main():
-	#TODO: fix logged_in make it its own function 
+	# TODO: fix logged_in make it its own function 
 	# Start the application show menu with options
 	print("Welcome to the App\n Menu: Login | Register | Exit")
 	# Give the use the ability to choose from the options
@@ -58,6 +61,8 @@ def main():
 			# Establish the connection to the server using the socket
 			s = establish_connection()
 			login(s)
+			# how can i define username?
+			logout(s, username)
 			break
 		elif menu_opt == "exit":
 			print("Bye See you soon!")

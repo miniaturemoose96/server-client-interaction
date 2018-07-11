@@ -1,6 +1,6 @@
 import socket
 """
-	TODO: Add a menu 
+	TODO: Add logout validation to return success or failure logging off
 """
 # create a list of valid users and passwords
 LOGINS = [
@@ -44,6 +44,18 @@ def validate_login(conn):
 	return False		
 
 
+def validate_logout(conn):
+	#TODO: Fix in order to be implemented to as a feature 
+	# receive user input either yes or no to check for valid response
+	received_rsp = conn.recv(1024).decode().lower()
+	if received_rsp == "yes"
+		return "True"
+	elif received_rsp == "no"
+		return "False"
+	else:
+		return "Invalid command"
+
+		
 def main():
     initiate_server()
 
