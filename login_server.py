@@ -27,7 +27,7 @@ def initiate_server():
     logged_in = False
     while not logged_in:
         logged_in = validate_login(conn)
-    return conn	
+    return conn
 
 
 def validate_login(conn):
@@ -51,11 +51,11 @@ def validate_login(conn):
 
 
 def logout(conn):
-    #TODO: Fix in order to be implemented to as a feature 
     # receive user input either yes or no to check for valid response
     received_rsp = conn.recv(1024).decode().lower()
     if received_rsp == "logout":
         conn.sendall(b"Success")
+        return main()
         return True
     return False
 
