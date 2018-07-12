@@ -45,9 +45,10 @@ def logout(s, username):
         s.sendall(b"Logout")
         logout_rsp = s.recv(1024).decode()
         if "Success" in logout_rsp:
-            print("You logged out successfully.")
-        else:
-            print("Logout failed.")
+            print("You logged out successfully.\n See you soon!")
+            return main()# Return user back to menu options
+    else:
+        print("Logout fail")
 
 
 def main():
