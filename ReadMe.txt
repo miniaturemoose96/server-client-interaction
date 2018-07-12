@@ -6,8 +6,9 @@ using python sockets to establish a connection.
 Protocol:
 	
 	Client:
-	USER:<username>
-	PASSWORD:<password>
+	User:<username>
+	Password:<password>
+    Logout
 	
 	Server:
 	Success

@@ -1,6 +1,6 @@
 import socket
 """
-	TODO: Add logout validation to return success or failure logging off
+    TODO: Add logout validation to return success or failure logging off
 """
 # create a list of valid users and passwords
 LOGINS = [
@@ -27,37 +27,43 @@ def initiate_server():
     logged_in = False
     while not logged_in:
         logged_in = validate_login(conn)
-    conn.close()
+    return conn	
 
 
 def validate_login(conn):
-	# receive the input given by user to check if it is valid login
-	username = conn.recv(1024).decode()
-	password = conn.recv(1024).decode()
-	if (username, password) in LOGINS:
-		rsp = "Success"
-		conn.sendall(rsp.encode())
-		return True
-	else:
-		rsp = "Fail"
-		conn.sendall(rsp.encode())
-	return False		
+    # receive the input given by user to check if it is valid login
+    msg = conn.recv(1024).decode()
+    command, username = msg.split(":")
+    if command != "User":
+        return False
+    msg = conn.recv(1024).decode()
+    command, password = msg.split(":")
+    if command != "Password":
+        return False
+    if (username, password) in LOGINS:
+        rsp = "Success"
+        conn.sendall(rsp.encode())
+        return True
+    else:
+        rsp = "Fail"
+        conn.sendall(rsp.encode())
+    return False
 
 
-def validate_logout(conn):
-	#TODO: Fix in order to be implemented to as a feature 
-	# receive user input either yes or no to check for valid response
-	received_rsp = conn.recv(1024).decode().lower()
-	if received_rsp == "yes"
-		return "True"
-	elif received_rsp == "no"
-		return "False"
-	else:
-		return "Invalid command"
+def logout(conn):
+    #TODO: Fix in order to be implemented to as a feature 
+    # receive user input either yes or no to check for valid response
+    received_rsp = conn.recv(1024).decode().lower()
+    if received_rsp == "logout":
+        conn.sendall(b"Success")
+        return True
+    return False
 
-		
+
 def main():
-    initiate_server()
+    conn = initiate_server()
+    logout(conn)
+    conn.close()
 
 
 if __name__ == "__main__":

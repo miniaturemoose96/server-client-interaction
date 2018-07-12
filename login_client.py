@@ -22,8 +22,8 @@ def login(s):
 		print("Welcome, please Login")
 		username = input("Username: ")
 		password = input("Password: ")
-		s.sendall(username.encode())
-		s.sendall(password.encode())
+		s.sendall("User:{}".format(username).encode())
+		s.sendall("Password:{}".format(password).encode())
 		server_rsp = s.recv(1024).decode()
 		if "Success" in server_rsp:
 			logged_in = True
@@ -34,20 +34,20 @@ def login(s):
 			continue
 	else:
 		print(f"You are logged in as {username}")
-	return username, logged_in 	
-	s.close()
+	return username
 
 
 def logout(s, username):
 	# Allow the user to logout of the application
 	print(f"Would you like to Logout {username}?")
-	client_rsp = input("Yes or No \n>>").lower()
-	s.sendall(client_rsp.encode())
-	logout_rsp = s.recv(1024).decode()
-	if "Success" in logout_rsp:
-		print("You logged out successfully.")
-	else:
-		print("You chose to stay logged in.")
+	client_rsp = input("Yes or No >>").lower()
+	if client_rsp == "yes":
+		s.sendall(b"Logout")
+		logout_rsp = s.recv(1024).decode()
+		if "Success" in logout_rsp:
+			print("You logged out successfully.")
+		else:
+			print("Logout failed.")
 	
 	
 def main():
@@ -60,8 +60,7 @@ def main():
 		if menu_opt == "login":
 			# Establish the connection to the server using the socket
 			s = establish_connection()
-			login(s)
-			# how can i define username?
+			username = login(s)
 			logout(s, username)
 			break
 		elif menu_opt == "exit":
