@@ -34,21 +34,25 @@ def login(s):
             continue
     else:
         print(f"You are logged in as {username}")
-    return username
+    return logged_in, username
 
 
-def logout(s, username):
+def logout(s, logged_in, username):
+    #TODO: Pass the variable login to create a user session here 
     # Allow the user to logout of the application
-    print(f"Would you like to Logout {username}?")
-    client_rsp = input("Yes or No >>").lower()
-    if client_rsp == "yes":
-        s.sendall(b"Logout")
-        logout_rsp = s.recv(1024).decode()
-        if "Success" in logout_rsp:
-            print("You logged out successfully.\n See you soon!")
-            return main()# Return user back to menu options
-    else:
-        print("Logout fail")
+    while logged_in:
+        print(f"Would you like to Logout {username}?")
+        client_rsp = input("Yes or No >>").lower()
+        if client_rsp == "yes":
+            s.sendall(b"Logout")
+            logout_rsp = s.recv(1024).decode()
+            if "Success" in logout_rsp:
+                print("You logged out successfully.\n See you soon!")
+                return main()# Return user back to menu options
+            else:
+                print("Logout fail")
+        else:
+            print(f"{logout_rsp} is not a valid response")
 
 
 def main():
@@ -60,8 +64,8 @@ def main():
         if menu_opt == "login":
         # Establish the connection to the server using the socket
             s = establish_connection()
-            username = login(s)
-            logout(s, username)
+            username, logged_in = login(s)
+            logout(s, username, logged_in)
             break
         elif menu_opt == "exit":
             print("Bye See you soon!")
