@@ -9,10 +9,16 @@ Protocol:
 	User:<username>
 	Password:<password>
     Logout
+    Abort Logout
 	
 	Server:
+    login:
 	Success
 	Fail
+    
+    logout:
+    Success
+    Fail
 
 Requirements:
 
