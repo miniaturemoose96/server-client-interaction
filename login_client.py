@@ -5,7 +5,7 @@ import sys
 """
 
 
-def establish_connection():   
+def establish_connection():
     # connect to the initiated server
     s = socket.socket()
     s.connect(('127.0.0.1', 12345))
@@ -46,29 +46,34 @@ def logout(s, logged_in, username):
         if client_rsp == "yes":
             s.sendall(b"Logout")
             logout_rsp = s.recv(1024).decode()
+        elif client_rsp == "no":
+            s.sendall(b"Abort Logout")
+            logout_rsp = s.recv(1024).decode()
             if "Success" in logout_rsp:
                 print("You logged out successfully.\n See you soon!")
                 return main()# Return user back to menu options
             else:
                 print("Logout fail")
+                break
         else:
-            print(f"{logout_rsp} is not a valid response")
+            print(f"{client_rsp} is not a valid response")
 
 
 def main():
+    # Establish the connection to the server using the socket
+    s = establish_connection()
     # Start the application show menu with options
     print("Welcome to the App\n Menu: Login | Register | Exit")
     # Give the use the ability to choose from the options
     while True:
         menu_opt = input(">>").lower()
         if menu_opt == "login":
-        # Establish the connection to the server using the socket
-            s = establish_connection()
             username, logged_in = login(s)
             logout(s, username, logged_in)
             break
         elif menu_opt == "exit":
             print("Bye See you soon!")
+            s.close()
             sys.exit()
         else:
             print(f"{menu_opt} is not a valid menu option.")
