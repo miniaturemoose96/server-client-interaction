@@ -57,6 +57,8 @@ def logout(conn):
         conn.sendall(b"Success")
         return main()
         return True
+    elif received_rsp == "abort logout":
+        conn.sendall(b"Fail")
     return False
 
 
