@@ -32,16 +32,28 @@ def login(s):
             logged_in = False
             print("Incorrect Username/Password, Please Try again.")
             continue
-    else:
-        print(f"You are logged in as {username}")
     return logged_in, username
+
+
+# User session
+def member_session(s, logged_in, username):
+    while logged_in:
+        print(f"You are logged in as {username}")
+        print("Member Menu: Play TicTacToe | Logout")
+        member_opt = input(">>").lower()
+        if member_opt == "logout":
+            logout(s, logged_in, username)
+        else:
+            print(f"You are still logged in as {username}")
+            break
+    else:
+        print(f"{member_opt} is not a valid response")
 
 
 def logout(s, logged_in, username):
     #TODO: Pass the variable login to create a user session here 
     # Allow the user to logout of the application
     while logged_in:
-        print(f"Would you like to Logout {username}?")
         client_rsp = input("Yes or No >>").lower()
         if client_rsp == "yes":
             s.sendall(b"Logout")
@@ -66,7 +78,7 @@ def main():
         menu_opt = input(">>").lower()
         if menu_opt == "login":
             username, logged_in = login(s)
-            logout(s, username, logged_in)
+            member_session(s, username, logged_in)
         elif menu_opt == "exit":
             print("Bye See you soon!")
             s.close()
