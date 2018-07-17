@@ -1,4 +1,5 @@
 import socket
+import sys
 """
     TODO: Add logout validation to return success or failure logging off
 """
@@ -23,17 +24,18 @@ def initiate_server():
     print(f"Got connection from: {addr}")
     msg = "A Connection has been established"
     conn.sendall(msg.encode())
-    # check if the client is logged in or not
-    logged_in = False
-    while not logged_in:
-        logged_in = validate_login(conn)
     return conn
 
 
 def validate_login(conn):
     # receive the input given by user to check if it is valid login
     msg = conn.recv(1024).decode()
-    command, username = msg.split(":")
+    # catch the exception when client exits the app
+    try:
+        command, username = msg.split(":")
+    except ValueError:
+        print("Client closed connection.")
+        sys.exit()
     if command != "User":
         return False
     msg = conn.recv(1024).decode()
@@ -57,13 +59,12 @@ def logout(conn):
         conn.sendall(b"Success")
         return main()
         return True
-    elif received_rsp == "abort logout":
-        conn.sendall(b"Fail")
     return False
 
 
 def main():
     conn = initiate_server()
+    validate_login(conn)
     logout(conn)
     conn.close()
 
