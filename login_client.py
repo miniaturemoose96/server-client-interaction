@@ -13,7 +13,7 @@ def establish_connection():
     print(msg)
     return s
 
-	
+
 def login(s):
     # This is the users first time, ask for credentials
     logged_in = False
@@ -46,31 +46,27 @@ def logout(s, logged_in, username):
         if client_rsp == "yes":
             s.sendall(b"Logout")
             logout_rsp = s.recv(1024).decode()
-        elif client_rsp == "no":
-            s.sendall(b"Abort Logout")
-            logout_rsp = s.recv(1024).decode()
             if "Success" in logout_rsp:
                 print("You logged out successfully.\n See you soon!")
                 return main()# Return user back to menu options
             else:
                 print("Logout fail")
-                break
         else:
             print(f"{client_rsp} is not a valid response")
+            break
 
 
 def main():
     # Establish the connection to the server using the socket
     s = establish_connection()
-    # Start the application show menu with options
-    print("Welcome to the App\n Menu: Login | Register | Exit")
     # Give the use the ability to choose from the options
     while True:
+        # Start the application show menu with options
+        print("Welcome to the App\n Menu: Login | Register | Exit")
         menu_opt = input(">>").lower()
         if menu_opt == "login":
             username, logged_in = login(s)
             logout(s, username, logged_in)
-            break
         elif menu_opt == "exit":
             print("Bye See you soon!")
             s.close()
